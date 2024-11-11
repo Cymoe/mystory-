@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Dialog,
@@ -23,12 +23,6 @@ interface PaymentModalProps {
 export function PaymentModal({ isOpen, onClose, formData }: PaymentModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (isOpen && typeof window !== "undefined") {
-      // Perform any window-specific operations here
-    }
-  }, [isOpen]);
-
   const handlePayment = async () => {
     try {
       setIsLoading(true);
@@ -47,8 +41,7 @@ export function PaymentModal({ isOpen, onClose, formData }: PaymentModalProps) {
 
       const { url } = await response.json();
       
-      // Redirect to Stripe Checkout
-      if (url) {
+      if (url && typeof window !== "undefined") {
         window.location.assign(url);
       } else {
         throw new Error('No checkout URL received');

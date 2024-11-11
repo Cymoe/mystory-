@@ -33,15 +33,23 @@ export default function ResultsPage() {
   }, [supabase]);
 
   useEffect(() => {
-    if (sessionId) {
-      setHasPaid(true);
-    }
-    // Simulate loading time for anticipation
-    const timer = setTimeout(() => {
+    const verifyPayment = async () => {
+      if (sessionId) {
+        const { data, error } = await supabase
+          .from('purchases')
+          .select('status')
+          .eq('stripe_session_id', sessionId)
+          .single();
+
+        if (data && data.status === 'completed') {
+          setHasPaid(true);
+        }
+      }
       setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [sessionId]);
+    };
+
+    verifyPayment();
+  }, [sessionId, supabase]);
 
   if (!data) {
     router.push("/questionnaire");

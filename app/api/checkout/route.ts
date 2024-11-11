@@ -20,8 +20,8 @@ export async function POST(req: Request) {
         },
       ],
       mode: "payment",
-      success_url: `${origin}/results?session_id={CHECKOUT_SESSION_ID}&ref=${tempId}`,
-      cancel_url: `${origin}/results?ref=${tempId}`,
+      success_url: `${origin}/results?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/questionnaire`,
       allow_promotion_codes: true,
       billing_address_collection: "auto",
     });
